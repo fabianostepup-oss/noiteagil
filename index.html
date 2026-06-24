@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOITE ÁGIL – O Método de Sono Avançado</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --moss:   #1E4632;
+      --moss-light: #2a5e45;
+      --cream:  #FDFBF7;
+      --cream-dark: #F4F0E8;
+      --orange: #F27405;
+      --orange-dark: #D96504;
+      --text-dark: #1a1a1a;
+      --text-mid:  #4a4a4a;
+      --text-soft: #7a7a7a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--text-dark);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── WAVES ── */
+    .wave-wrap {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      overflow: hidden;
+      line-height: 0;
+    }
+    .wave-wrap svg { display: block; width: 100%; }
+
+    /* ── SLEEP ANIMATION (hero card) ── */
+    @keyframes breathe {
+      0%,100% { transform: scaleY(1);   opacity:.35; }
+      50%      { transform: scaleY(1.6); opacity:.7;  }
+    }
+    .wave-bar { animation: breathe 3s ease-in-out infinite; transform-origin: bottom; }
+    .wave-bar:nth-child(2) { animation-delay:.3s; }
+    .wave-bar:nth-child(3) { animation-delay:.6s; }
+    .wave-bar:nth-child(4) { animation-delay:.9s; }
+    .wave-bar:nth-child(5) { animation-delay:1.2s;}
+    .wave-bar:nth-child(6) { animation-delay:.9s; }
+    .wave-bar:nth-child(7) { animation-delay:.6s; }
+    .wave-bar:nth-child(8) { animation-delay:.3s; }
+
+    /* ── STARS ── */
+    @keyframes twinkle {
+      0%,100% { opacity:.2; }
+      50%      { opacity:1; }
+    }
+    .star { animation: twinkle 2.5s ease-in-out infinite; }
+    .star:nth-child(2){ animation-delay:.7s; }
+    .star:nth-child(3){ animation-delay:1.4s;}
+
+    /* ── CTA PULSE ── */
+    @keyframes pulse-orange {
+      0%,100% { box-shadow: 0 0 0 0 rgba(242,116,5,.4); }
+      50%      { box-shadow: 0 0 0 16px rgba(242,116,5,0); }
+    }
+    .cta-pulse { animation: pulse-orange 2.2s ease-in-out infinite; }
+
+    /* ── COUNTDOWN ── */
+    #timer-box span {
+      display:inline-flex; align-items:center; justify-content:center;
+      background: var(--moss); color:#fff;
+      font-size:1.6rem; font-weight:800; line-height:1;
+      width:3rem; height:3rem; border-radius:.375rem;
+    }
+
+    /* ── GUARANTEE BADGE ── */
+    .guarantee-ring {
+      width:120px; height:120px;
+      border: 4px solid var(--orange);
+      border-radius:50%;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      text-align:center; padding:.5rem;
+      flex-shrink:0;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .moon-divider { position:relative; text-align:center; margin:0; line-height:0; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+
+    /* ── BENEFIT CARD HOVER ── */
+    .benefit-card { transition: transform .25s, box-shadow .25s; }
+    .benefit-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(30,70,50,.12); }
+
+    /* ── BONUS CARD ── */
+    .bonus-card { border-left: 4px solid var(--orange); }
+
+    /* ── PRICE CARD ── */
+    .price-card {
+      background: linear-gradient(135deg, var(--moss) 0%, #2e6b4f 100%);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header style="background:var(--moss);" class="sticky top-0 z-50 shadow-lg">
+  <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+    <div class="flex flex-col leading-tight">
+      <span class="text-white font-black tracking-widest text-lg md:text-xl uppercase" style="letter-spacing:.18em;">NOITE ÁGIL</span>
+      <span class="text-green-300 text-xs font-medium tracking-wide">— O Método de Sono Avançado</span>
+    </div>
+    <a href="#oferta" class="cta-pulse hidden md:inline-flex items-center gap-2 text-white font-bold text-sm px-5 py-2 rounded-full transition" style="background:var(--orange);">
+      GARANTIR ACESSO →
+    </a>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════
+     URGÊNCIA TOPO
+════════════════════════════════════════ -->
+<div style="background:#1a1a1a; color:#fff;" class="text-center text-xs md:text-sm py-2 font-medium">
+  ⚡ Oferta especial de lançamento — Termina em:&nbsp;
+  <span id="timer-box" class="inline-flex items-center gap-1 ml-1">
+    <span id="t-h">00</span>:
+    <span id="t-m">00</span>:
+    <span id="t-s">00</span>
+  </span>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section style="background:var(--moss);" class="relative overflow-hidden pt-16 pb-32 md:pt-24 md:pb-40">
+
+  <!-- Stars -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <svg class="star absolute" style="top:12%;left:8%;width:6px;height:6px;" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="#fff"/></svg>
+    <svg class="star absolute" style="top:30%;left:20%;width:4px;height:4px;" viewBox="0 0 4 4"><circle cx="2" cy="2" r="2" fill="#a7f3d0"/></svg>
+    <svg class="star absolute" style="top:8%;right:15%;width:5px;height:5px;" viewBox="0 0 5 5"><circle cx="2.5" cy="2.5" r="2.5" fill="#fff"/></svg>
+    <svg class="star absolute" style="top:55%;right:8%;width:4px;height:4px;" viewBox="0 0 4 4"><circle cx="2" cy="2" r="2" fill="#a7f3d0"/></svg>
+    <svg class="star absolute" style="top:20%;right:35%;width:3px;height:3px;" viewBox="0 0 3 3"><circle cx="1.5" cy="1.5" r="1.5" fill="#fff"/></svg>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 grid md:grid-cols-2 gap-10 md:gap-16 items-center relative z-10">
+
+    <!-- Copy -->
+    <div class="text-white">
+      <span class="inline-block bg-green-700 text-green-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-5">Método Comprovado · Acesso Imediato</span>
+
+      <h1 class="font-black leading-tight mb-5" style="font-size:clamp(1.8rem,4vw,2.9rem); font-family:'Inter',sans-serif;">
+        DOMINE O SONO,<br>
+        <span style="color:var(--orange);">CONQUISTE O DIA</span><br>
+        EM MINUTOS.
+      </h1>
+
+      <p class="text-green-100 text-base md:text-lg leading-relaxed mb-3" style="max-width:480px;">
+        O guia definitivo para noites reparadoras e energia ilimitada — <strong class="text-white">por apenas R$&nbsp;29,90.</strong>
+      </p>
+      <p class="text-green-200 text-sm md:text-base leading-relaxed mb-8" style="max-width:460px;">
+        Aprenda as técnicas comprovadas para adormecer mais rápido, dormir profundamente e acordar revigorado. <strong class="text-white">Sem remédios. Sem complicação.</strong>
+      </p>
+
+      <a href="#oferta" class="cta-pulse inline-flex items-center gap-2 text-white font-extrabold text-base md:text-lg px-8 py-4 rounded-full shadow-xl transition hover:opacity-90 mb-6" style="background:var(--orange); max-width:520px;">
+        QUERO DORMIR MELHOR POR APENAS R$&nbsp;29,90 →
+      </a>
+
+      <div class="flex flex-wrap gap-4 text-green-300 text-xs font-medium">
+        <span class="flex items-center gap-1">✅ Acesso Vitalício</span>
+        <span class="flex items-center gap-1">✅ Garantia de 7 dias</span>
+        <span class="flex items-center gap-1">✅ Download imediato</span>
+      </div>
+    </div>
+
+    <!-- Hero Card -->
+    <div class="flex justify-center md:justify-end">
+      <div class="relative w-72 md:w-80 rounded-3xl overflow-hidden shadow-2xl" style="background:linear-gradient(160deg,#0f2b1e 0%,#1e4632 60%,#2e6b4f 100%);">
+        <!-- Moon -->
+        <div class="flex justify-center pt-8 pb-2">
+          <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+            <circle cx="27" cy="27" r="27" fill="#f0fdf4" opacity=".08"/>
+            <path d="M35 14a18 18 0 1 0 0 26 14 14 0 0 1 0-26z" fill="#a7f3d0" opacity=".85"/>
+          </svg>
+        </div>
+
+        <div class="px-6 pt-2 pb-3">
+          <p class="text-green-300 text-xs font-semibold uppercase tracking-widest text-center mb-1">Indução ao sono em</p>
+          <p class="text-white text-center font-black" style="font-size:3.5rem;line-height:1;">120s</p>
+          <p class="text-green-200 text-xs text-center mb-5">com a Técnica Militar Adaptada</p>
+
+          <!-- Wave bars -->
+          <div class="flex items-end justify-center gap-1 h-12 mb-5" aria-hidden="true">
+            <div class="wave-bar bg-green-400 rounded-t w-3" style="height:16px;"></div>
+            <div class="wave-bar bg-green-400 rounded-t w-3" style="height:28px;"></div>
+            <div class="wave-bar bg-green-300 rounded-t w-3" style="height:40px;"></div>
+            <div class="wave-bar bg-green-200 rounded-t w-3" style="height:48px;"></div>
+            <div class="wave-bar bg-green-300 rounded-t w-3" style="height:44px;"></div>
+            <div class="wave-bar bg-green-400 rounded-t w-3" style="height:32px;"></div>
+            <div class="wave-bar bg-green-400 rounded-t w-3" style="height:20px;"></div>
+            <div class="wave-bar bg-green-500 rounded-t w-3" style="height:12px;"></div>
+          </div>
+
+          <!-- Stats row -->
+          <div class="grid grid-cols-3 gap-2 pb-6">
+            <div class="text-center">
+              <p class="text-white font-black text-lg">98%</p>
+              <p class="text-green-300 text-xs leading-tight">qualidade do sono</p>
+            </div>
+            <div class="text-center border-x border-green-700">
+              <p class="text-white font-black text-lg">8h</p>
+              <p class="text-green-300 text-xs leading-tight">descanso real</p>
+            </div>
+            <div class="text-center">
+              <p class="text-white font-black text-lg">+3×</p>
+              <p class="text-green-300 text-xs leading-tight">mais energia</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- Wave bottom -->
+  <div class="wave-wrap">
+    <svg viewBox="0 0 1440 70" preserveAspectRatio="none" style="height:70px;">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,70 L0,70 Z" fill="#FDFBF7"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     PROBLEMA / IDENTIFICAÇÃO
+════════════════════════════════════════ -->
+<section class="py-16 md:py-20" style="background:var(--cream);">
+  <div class="max-w-3xl mx-auto px-5 text-center reveal">
+    <p class="text-sm font-bold uppercase tracking-widest mb-4" style="color:var(--orange);">Você se identifica com isso?</p>
+    <h2 class="font-black text-2xl md:text-4xl leading-tight mb-8" style="color:var(--text-dark);">
+      Fica horas na cama sem conseguir desligar o cérebro?
+    </h2>
+    <div class="grid md:grid-cols-2 gap-4 text-left">
+      <div class="flex gap-3 items-start bg-white rounded-2xl p-4 shadow-sm">
+        <span class="text-2xl">😰</span>
+        <p class="text-sm" style="color:var(--text-mid);">Acorda várias vezes durante a noite e fica exausto de manhã, mesmo tendo "dormido"</p>
+      </div>
+      <div class="flex gap-3 items-start bg-white rounded-2xl p-4 shadow-sm">
+        <span class="text-2xl">🧠</span>
+        <p class="text-sm" style="color:var(--text-mid);">Mente a mil processando tudo o que ainda precisa fazer quando deveria estar descansando</p>
+      </div>
+      <div class="flex gap-3 items-start bg-white rounded-2xl p-4 shadow-sm">
+        <span class="text-2xl">☕</span>
+        <p class="text-sm" style="color:var(--text-mid);">Depende de café e energéticos só para funcionar durante o dia</p>
+      </div>
+      <div class="flex gap-3 items-start bg-white rounded-2xl p-4 shadow-sm">
+        <span class="text-2xl">📉</span>
+        <p class="text-sm" style="color:var(--text-mid);">Sente que cansaço crônico está prejudicando sua produtividade, humor e saúde</p>
+      </div>
+    </div>
+    <p class="mt-8 font-bold text-lg" style="color:var(--moss);">Se respondeu sim a pelo menos um — o Noite Ágil foi criado para você.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     PILARES / BENEFÍCIOS
+════════════════════════════════════════ -->
+<section class="py-16 md:py-24" style="background:var(--cream-dark);">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="text-center mb-12 reveal">
+      <p class="text-sm font-bold uppercase tracking-widest mb-3" style="color:var(--orange);">O que você vai aprender</p>
+      <h2 class="font-black text-2xl md:text-4xl leading-tight" style="color:var(--text-dark);">Três Pilares Para Noites Perfeitas</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Card 1 -->
+      <div class="benefit-card bg-white rounded-3xl p-7 shadow-sm border border-gray-100 reveal">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 text-2xl" style="background:#e6f4ee;">🌿</div>
+        <h3 class="font-black text-lg mb-3" style="color:var(--moss);">Higiene do Sono Estratégica</h3>
+        <p class="text-sm leading-relaxed mb-4" style="color:var(--text-mid);">Hábitos precisos que reprogramam seu ritmo circadiano. Descubra os erros silenciosos que sabotam seu sono toda noite — e elimine-os de forma definitiva.</p>
+        <ul class="text-xs space-y-2" style="color:var(--text-soft);">
+          <li class="flex gap-2"><span style="color:var(--orange);">→</span> Temperatura e luz ideais para o quarto</li>
+          <li class="flex gap-2"><span style="color:var(--orange);">→</span> Protocolo de desintoxicação digital</li>
+          <li class="flex gap-2"><span style="color:var(--orange);">→</span> Os 7 hábitos que destroem o sono profundo</li>
+        </ul>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="benefit-card bg-white rounded-3xl p-7 shadow-sm border border-gray-100 reveal" style="transition-delay:.1s;">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 text-2xl" style="background:#fff3e6;">🌙</div>
+        <h3 class="font-black text-lg mb-3" style="color:var(--moss);">Rotina Noturna Passo a Passo</h3>
+        <p class="text-sm leading-relaxed mb-4" style="color:var(--text-mid);">Uma sequência de 30 minutos que prepara mente e corpo para entrar em modo de recuperação profunda — como um ritual que treina o cérebro a associar noite com descanso.</p>
+        <ul class="text-xs space-y-2" style="color:var(--text-soft);">
+          <li class="flex gap-2"><span style="color:var(--orange);">→</span> Desaceleração mental guiada</li>
+          <li class="flex gap-2"><span style="color:var(--orange);">→</span> Técnicas de respiração para relaxamento</li>
+          <li class="flex gap-2"><span style="color:var(--orange);">→</span> Sequência de preparo do ambiente</li>
+        </ul>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="benefit-card bg-white rounded-3xl p-7 shadow-sm border border-gray-100 reveal" style="transition-delay:.2s;">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 text-2xl" style="background:#e6f4ee;">⚡</div>
+        <h3 class="font-black text-lg mb-3" style="color:var(--moss);">Técnicas de Indução Rápida</h3>
+        <p class="text-sm leading-relaxed mb-4" style="color:var(--text-mid);">O método usado pelas forças armadas dos EUA para adormecer em 2 minutos, adaptado com gatilhos biológicos modernos para qualquer pessoa em qualquer situação.</p>
+        <ul class="text-xs space-y-2" style="color:var(--text-soft);">
+          <li class="flex gap-2"><span style="color:var(--orange);">→</span> Técnica Militar de Indução Rápida (120s)</li>
+          <li class="flex gap-2"><span style="color:var(--orange);">→</span> Método 4-7-8 de controle do sistema nervoso</li>
+          <li class="flex gap-2"><span style="color:var(--orange);">→</span> Visualização guiada para desligar o cérebro</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     BÔNUS
+════════════════════════════════════════ -->
+<section class="py-16 md:py-24" style="background:var(--cream);">
+  <div class="max-w-5xl mx-auto px-5">
+    <div class="text-center mb-12 reveal">
+      <p class="text-sm font-bold uppercase tracking-widest mb-3" style="color:var(--orange);">Tudo incluso no seu acesso</p>
+      <h2 class="font-black text-2xl md:text-4xl leading-tight" style="color:var(--text-dark);">3 Bônus Exclusivos<br><span style="color:var(--moss);">Sem Custo Adicional</span></h2>
+    </div>
+
+    <div class="space-y-5">
+
+      <!-- Bônus 1 -->
+      <div class="bonus-card bg-white rounded-2xl p-6 md:p-7 shadow-sm flex gap-5 items-start reveal">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0 font-black text-white" style="background:var(--moss);">♾️</div>
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--orange);">Bônus #1</span>
+          <h3 class="font-black text-base md:text-lg mt-1 mb-2" style="color:var(--text-dark);">Acesso Vitalício + Atualizações Sem Custo</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--text-mid);">O sono muda, a ciência avança, e nossa pesquisa também. Ao garantir o Noite Ágil hoje, você recebe <strong>acesso para sempre</strong> — sem taxas de assinatura, sem renovação, sem surpresas. Cada nova versão cai direto na sua conta.</p>
+        </div>
+      </div>
+
+      <!-- Bônus 2 -->
+      <div class="bonus-card bg-white rounded-2xl p-6 md:p-7 shadow-sm flex gap-5 items-start reveal" style="transition-delay:.1s;">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0 font-black text-white" style="background:var(--moss);">📓</div>
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--orange);">Bônus #2</span>
+          <h3 class="font-black text-base md:text-lg mt-1 mb-2" style="color:var(--text-dark);">Diário do Sono Digital & Rastreador de Hábitos</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--text-mid);">Um template prático — imprimível ou digital — para mapear os gatilhos que estão roubando o seu descanso. Em poucos dias você identificará exatamente <strong>o que muda mais rápido</strong> no seu sono.</p>
+        </div>
+      </div>
+
+      <!-- Bônus 3 -->
+      <div class="bonus-card bg-white rounded-2xl p-6 md:p-7 shadow-sm flex gap-5 items-start reveal" style="transition-delay:.2s;">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0 font-black text-white" style="background:var(--moss);">🍃</div>
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--orange);">Bônus #3</span>
+          <h3 class="font-black text-base md:text-lg mt-1 mb-2" style="color:var(--text-dark);">Guia de Alimentação & Chás Indutores de Sono Profundo</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--text-mid);">Um manual com alimentos comuns que fortalecem o sono e receitas de infusões naturais que <strong>desarmam o sistema nervoso</strong> à noite — disponíveis em qualquer supermercado.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     PROVA SOCIAL
+════════════════════════════════════════ -->
+<section class="py-16 md:py-20" style="background:var(--cream-dark);">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="text-center mb-10 reveal">
+      <p class="text-sm font-bold uppercase tracking-widest mb-3" style="color:var(--orange);">Resultados reais</p>
+      <h2 class="font-black text-2xl md:text-3xl" style="color:var(--text-dark);">O que nossos leitores dizem</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5">
+
+      <div class="bg-white rounded-2xl p-6 shadow-sm reveal">
+        <div class="flex gap-1 mb-3">⭐⭐⭐⭐⭐</div>
+        <p class="text-sm italic leading-relaxed mb-4" style="color:var(--text-mid);">"Levava mais de 1h para dormir todo dia. Com a técnica militar do Noite Ágil, em 3 dias já estava adormecendo em menos de 15 minutos. Parece milagre mas é ciência."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm" style="background:var(--moss);">MR</div>
+          <div><p class="text-xs font-bold" style="color:var(--text-dark);">Marcelo R.</p><p class="text-xs" style="color:var(--text-soft);">Engenheiro, SP</p></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 shadow-sm reveal" style="transition-delay:.1s;">
+        <div class="flex gap-1 mb-3">⭐⭐⭐⭐⭐</div>
+        <p class="text-sm italic leading-relaxed mb-4" style="color:var(--text-mid);">"O guia de chás mudou meu jogo. Sabia que camomila quase não funciona? Aprendi quais realmente funcionam. Minha produtividade no trabalho aumentou absurdamente."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm" style="background:var(--moss);">FC</div>
+          <div><p class="text-xs font-bold" style="color:var(--text-dark);">Fernanda C.</p><p class="text-xs" style="color:var(--text-soft);">Empreendedora, MG</p></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 shadow-sm reveal" style="transition-delay:.2s;">
+        <div class="flex gap-1 mb-3">⭐⭐⭐⭐⭐</div>
+        <p class="text-sm italic leading-relaxed mb-4" style="color:var(--text-mid);">"Gastei anos tentando vários apps de meditação. O Noite Ágil é diferente porque vai direto ao ponto. Em 2 semanas já sentia que estava dormindo mais profundo. Vale cada centavo."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm" style="background:var(--moss);">RL</div>
+          <div><p class="text-xs font-bold" style="color:var(--text-dark);">Rodrigo L.</p><p class="text-xs" style="color:var(--text-soft);">Médico, RJ</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     PREÇO + GARANTIA
+════════════════════════════════════════ -->
+<section id="oferta" class="py-16 md:py-24" style="background:var(--cream);">
+  <div class="max-w-4xl mx-auto px-5">
+
+    <div class="text-center mb-10 reveal">
+      <p class="text-sm font-bold uppercase tracking-widest mb-3" style="color:var(--orange);">Oferta por tempo limitado</p>
+      <h2 class="font-black text-2xl md:text-4xl leading-tight" style="color:var(--text-dark);">Garanta o Pacote Completo Agora</h2>
+    </div>
+
+    <div class="price-card rounded-3xl p-8 md:p-12 text-white shadow-2xl reveal">
+      <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+
+        <!-- Itens inclusos -->
+        <div class="flex-1">
+          <p class="text-green-300 text-sm font-bold uppercase tracking-widest mb-4">Você vai receber:</p>
+          <ul class="space-y-3">
+            <li class="flex gap-3 items-start text-sm"><span class="text-green-300 font-bold mt-0.5">✓</span> <span>Guia Noite Ágil — Método Completo de Sono Avançado</span></li>
+            <li class="flex gap-3 items-start text-sm"><span class="text-green-300 font-bold mt-0.5">✓</span> <span><strong>Bônus #1:</strong> Acesso Vitalício + Atualizações Gratuitas</span></li>
+            <li class="flex gap-3 items-start text-sm"><span class="text-green-300 font-bold mt-0.5">✓</span> <span><strong>Bônus #2:</strong> Diário do Sono Digital & Rastreador de Hábitos</span></li>
+            <li class="flex gap-3 items-start text-sm"><span class="text-green-300 font-bold mt-0.5">✓</span> <span><strong>Bônus #3:</strong> Guia de Alimentação & Chás Indutores</span></li>
+            <li class="flex gap-3 items-start text-sm"><span class="text-green-300 font-bold mt-0.5">✓</span> <span>Garantia incondicional de 7 dias</span></li>
+          </ul>
+        </div>
+
+        <!-- Preço -->
+        <div class="text-center flex-shrink-0">
+          <p class="text-green-300 text-sm mb-1">Valor real do pacote:</p>
+          <p class="text-2xl font-bold line-through text-green-400 mb-1">R$ 208,00</p>
+          <p class="text-green-300 text-sm mb-2">Hoje, apenas:</p>
+          <p class="font-black text-white" style="font-size:3.5rem;line-height:1;">R$&nbsp;29,90</p>
+          <p class="text-green-300 text-xs mb-6">pagamento único · sem mensalidades</p>
+
+          <a href="#" class="cta-pulse inline-flex flex-col items-center gap-1 px-8 py-4 rounded-2xl text-white font-extrabold shadow-xl transition hover:opacity-90 w-full" style="background:var(--orange);">
+            <span class="text-base md:text-lg">QUERO MEU ACESSO AGORA</span>
+            <span class="text-xs font-medium opacity-80">Clique e garanta por R$ 29,90</span>
+          </a>
+
+          <p class="text-green-300 text-xs mt-3">🔒 Pagamento 100% seguro · Acesso imediato</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Garantia -->
+    <div class="mt-8 bg-white rounded-2xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row gap-6 items-center reveal">
+      <div class="guarantee-ring flex-shrink-0">
+        <span class="text-2xl">🛡️</span>
+        <span class="text-xs font-black uppercase mt-1" style="color:var(--orange);">Garantia</span>
+        <span class="text-xs font-black" style="color:var(--moss);">7 Dias</span>
+      </div>
+      <div>
+        <h3 class="font-black text-lg mb-2" style="color:var(--moss);">Garantia de Noite Bem Dormida</h3>
+        <p class="text-sm leading-relaxed" style="color:var(--text-mid);">Se em <strong>7 dias</strong> você não estiver adormecendo mais rápido e acordando revigorado, devolvemos cada centavo — sem perguntas, sem burocracia, sem julgamento. O risco é todo nosso. Você não tem nada a perder, exceto o sono ruim.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     FAQ
+════════════════════════════════════════ -->
+<section class="py-16 md:py-20" style="background:var(--cream-dark);">
+  <div class="max-w-3xl mx-auto px-5">
+    <div class="text-center mb-10 reveal">
+      <h2 class="font-black text-2xl md:text-3xl" style="color:var(--text-dark);">Perguntas Frequentes</h2>
+    </div>
+    <div class="space-y-4" id="faq">
+
+      <details class="bg-white rounded-2xl p-5 shadow-sm cursor-pointer reveal" open>
+        <summary class="font-bold text-sm md:text-base list-none flex justify-between items-center" style="color:var(--moss);">
+          Para quem é o Noite Ágil?
+          <span class="text-orange-500 text-lg font-black flex-shrink-0">+</span>
+        </summary>
+        <p class="text-sm mt-3 leading-relaxed" style="color:var(--text-mid);">Para qualquer pessoa que tem dificuldade para adormecer, acorda cansada ou sente que o sono não é restaurador — independente de idade ou estilo de vida. Funciona especialmente bem para quem tem rotina agitada e mente acelerada.</p>
+      </details>
+
+      <details class="bg-white rounded-2xl p-5 shadow-sm cursor-pointer reveal" style="transition-delay:.1s;">
+        <summary class="font-bold text-sm md:text-base list-none flex justify-between items-center" style="color:var(--moss);">
+          Preciso de algum equipamento especial?
+          <span class="text-orange-500 text-lg font-black flex-shrink-0">+</span>
+        </summary>
+        <p class="text-sm mt-3 leading-relaxed" style="color:var(--text-mid);">Não. Tudo que você precisa já está na sua casa. O método é 100% baseado em comportamento, respiração e ambiente — sem suplementos caros, sem aparelhos, sem apps pagos.</p>
+      </details>
+
+      <details class="bg-white rounded-2xl p-5 shadow-sm cursor-pointer reveal" style="transition-delay:.15s;">
+        <summary class="font-bold text-sm md:text-base list-none flex justify-between items-center" style="color:var(--moss);">
+          Em quanto tempo verei resultado?
+          <span class="text-orange-500 text-lg font-black flex-shrink-0">+</span>
+        </summary>
+        <p class="text-sm mt-3 leading-relaxed" style="color:var(--text-mid);">A maioria dos leitores relata melhora já na primeira noite de aplicação das técnicas de indução rápida. Resultados consistentes costumam aparecer em 3 a 7 dias de prática.</p>
+      </details>
+
+      <details class="bg-white rounded-2xl p-5 shadow-sm cursor-pointer reveal" style="transition-delay:.2s;">
+        <summary class="font-bold text-sm md:text-base list-none flex justify-between items-center" style="color:var(--moss);">
+          Como funciona o acesso?
+          <span class="text-orange-500 text-lg font-black flex-shrink-0">+</span>
+        </summary>
+        <p class="text-sm mt-3 leading-relaxed" style="color:var(--text-mid);">Após o pagamento você recebe acesso imediato por e-mail. O material é digital — disponível para ler no celular, tablet ou computador. Simples, rápido e sem espera.</p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     CTA FINAL
+════════════════════════════════════════ -->
+<section style="background:var(--moss);" class="relative overflow-hidden py-16 md:py-24">
+  <div class="max-w-3xl mx-auto px-5 text-center relative z-10 reveal">
+    <p class="text-green-300 text-sm font-bold uppercase tracking-widest mb-4">Última chance</p>
+    <h2 class="font-black text-white text-2xl md:text-4xl leading-tight mb-5">
+      Amanhã você pode acordar diferente.<br>
+      <span style="color:var(--orange);">Ou pode continuar exausto.</span>
+    </h2>
+    <p class="text-green-200 text-base mb-8 leading-relaxed">A escolha custa menos que um jantar. E muda tudo.</p>
+    <a href="#oferta" class="cta-pulse inline-flex flex-col items-center gap-1 px-10 py-5 rounded-2xl text-white font-extrabold shadow-2xl transition hover:opacity-90" style="background:var(--orange);">
+      <span class="text-lg md:text-xl">QUERO DORMIR MELHOR POR APENAS R$ 29,90 →</span>
+      <span class="text-xs font-medium opacity-80">Acesso imediato · Garantia de 7 dias</span>
+    </a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer style="background:#111; color:#aaa;" class="py-10">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div>
+        <p class="text-white font-black tracking-widest text-sm uppercase mb-1" style="letter-spacing:.18em;">NOITE ÁGIL</p>
+        <p class="text-xs">© 2025 Noite Ágil. Todos os direitos reservados.</p>
+      </div>
+      <nav class="flex flex-wrap gap-5 text-xs justify-center">
+        <a href="#" class="hover:text-white transition">Política de Privacidade</a>
+        <a href="#" class="hover:text-white transition">Termos de Uso</a>
+        <a href="#" class="hover:text-white transition">Política de Reembolso</a>
+        <a href="mailto:suporte@noiteagil.com.br" class="hover:text-white transition">Suporte</a>
+      </nav>
+    </div>
+    <p class="text-xs text-center mt-8 leading-relaxed opacity-60">
+      Este produto não é um substituto para acompanhamento médico. Em caso de distúrbios graves do sono, consulte um especialista.
+    </p>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+  /* ── Countdown ── */
+  (function () {
+    const end = new Date();
+    end.setHours(end.getHours() + 3, end.getMinutes() + 27, end.getSeconds() + 14);
+    function update() {
+      const diff = Math.max(0, end - Date.now());
+      const h = String(Math.floor(diff / 3600000)).padStart(2,'0');
+      const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+      const s = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+      document.getElementById('t-h').textContent = h;
+      document.getElementById('t-m').textContent = m;
+      document.getElementById('t-s').textContent = s;
+    }
+    update();
+    setInterval(update, 1000);
+  })();
+
+  /* ── Scroll Reveal ── */
+  (function () {
+    const els = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+  })();
+</script>
+
+</body>
+</html> 
